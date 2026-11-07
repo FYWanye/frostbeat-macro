@@ -1,0 +1,283 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="冰与火之宏" Width="350" Height="248" MinWidth="300" MinHeight="230" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" Background="Transparent" Foreground="#E8F0FA" FontFamily="Microsoft YaHei UI" ShowActivated="False" Topmost="True" WindowStartupLocation="Manual">
+ <Window.Resources>
+  <!-- 统一按钮样式：圆角胶囊 + 悬停/按压反馈 -->
+  <Style TargetType="Button">
+   <Setter Property="Focusable" Value="False"/>
+   <Setter Property="Background" Value="#1D2B42"/>
+   <Setter Property="Foreground" Value="#E8F0FA"/>
+   <Setter Property="Padding" Value="12,7"/>
+   <Setter Property="BorderThickness" Value="0"/>
+   <Setter Property="Cursor" Value="Hand"/>
+   <Setter Property="FontFamily" Value="Microsoft YaHei UI"/>
+   <Setter Property="Template">
+    <Setter.Value>
+     <ControlTemplate TargetType="Button">
+      <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}" BorderThickness="1" BorderBrush="#2C3E5C">
+       <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Border>
+      <ControlTemplate.Triggers>
+       <Trigger Property="IsMouseOver" Value="True">
+        <Setter TargetName="bd" Property="Opacity" Value="0.88"/>
+        <Setter TargetName="bd" Property="BorderBrush" Value="#3E567A"/>
+       </Trigger>
+       <Trigger Property="IsPressed" Value="True">
+        <Setter TargetName="bd" Property="Opacity" Value="0.72"/>
+       </Trigger>
+       <Trigger Property="IsEnabled" Value="False">
+        <Setter TargetName="bd" Property="Opacity" Value="0.4"/>
+       </Trigger>
+      </ControlTemplate.Triggers>
+     </ControlTemplate>
+    </Setter.Value>
+   </Setter>
+  </Style>
+  <!-- 文本框：深色输入区 + 聚焦高亮 -->
+  <Style TargetType="TextBox">
+   <Setter Property="Background" Value="#0B1322"/>
+   <Setter Property="Foreground" Value="#E8F0FA"/>
+   <Setter Property="BorderBrush" Value="#25344D"/>
+   <Setter Property="BorderThickness" Value="1"/>
+   <Setter Property="Padding" Value="8,6"/>
+   <Setter Property="FontSize" Value="13"/>
+   <Setter Property="VerticalContentAlignment" Value="Center"/>
+   <Setter Property="CaretBrush" Value="#38BDF8"/>
+   <Setter Property="SelectionBrush" Value="#1E6B8F"/>
+   <Setter Property="Template">
+    <Setter.Value>
+     <ControlTemplate TargetType="TextBox">
+      <Border x:Name="bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7">
+       <ScrollViewer x:Name="PART_ContentHost" Padding="{TemplateBinding Padding}"/>
+      </Border>
+      <ControlTemplate.Triggers>
+       <Trigger Property="IsKeyboardFocused" Value="True">
+        <Setter TargetName="bd" Property="BorderBrush" Value="#38BDF8"/>
+       </Trigger>
+       <Trigger Property="IsEnabled" Value="False">
+        <Setter TargetName="bd" Property="Opacity" Value="0.5"/>
+       </Trigger>
+      </ControlTemplate.Triggers>
+     </ControlTemplate>
+    </Setter.Value>
+   </Setter>
+  </Style>
+  <Style TargetType="CheckBox">
+   <Setter Property="Foreground" Value="#A6BAD8"/>
+   <Setter Property="VerticalAlignment" Value="Center"/>
+   <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+  <Style TargetType="Slider">
+   <Setter Property="VerticalAlignment" Value="Center"/>
+   <Setter Property="Margin" Value="8,0,0,0"/>
+  </Style>
+  <Style TargetType="ScrollBar">
+   <Setter Property="Width" Value="7"/>
+   <Setter Property="Template">
+    <Setter.Value>
+     <ControlTemplate TargetType="ScrollBar">
+      <Track Name="PART_Track" IsDirectionReversed="True" Orientation="Vertical" Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}" ViewportSize="{TemplateBinding ViewportSize}" Value="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+       <Track.DecreaseRepeatButton>
+        <RepeatButton Command="ScrollBar.PageUpCommand"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton>
+       </Track.DecreaseRepeatButton>
+       <Track.Thumb>
+        <Thumb><Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="#4A6286" CornerRadius="3" Margin="1,0"/></ControlTemplate></Thumb.Template></Thumb>
+       </Track.Thumb>
+       <Track.IncreaseRepeatButton>
+        <RepeatButton Command="ScrollBar.PageDownCommand"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate></RepeatButton.Template></RepeatButton>
+       </Track.IncreaseRepeatButton>
+      </Track>
+     </ControlTemplate>
+    </Setter.Value>
+   </Setter>
+  </Style>
+  <!-- 分节卡片：玻璃质感表面 -->
+  <Style x:Key="Card" TargetType="Border">
+   <Setter Property="Background">
+    <Setter.Value>
+     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Color="#1A2940" Offset="0"/>
+      <GradientStop Color="#141F33" Offset="1"/>
+     </LinearGradientBrush>
+    </Setter.Value>
+   </Setter>
+   <Setter Property="BorderBrush" Value="#2A3C58"/>
+   <Setter Property="BorderThickness" Value="1"/>
+   <Setter Property="CornerRadius" Value="9"/>
+   <Setter Property="Padding" Value="12"/>
+  </Style>
+  <!-- 小标签文字 -->
+  <Style x:Key="Label" TargetType="TextBlock">
+   <Setter Property="Foreground" Value="#9FB2CF"/>
+   <Setter Property="FontSize" Value="11"/>
+   <Setter Property="Margin" Value="0,0,0,6"/>
+  </Style>
+  <Style x:Key="Hint" TargetType="TextBlock">
+   <Setter Property="Foreground" Value="#7C90AE"/>
+   <Setter Property="FontSize" Value="11"/>
+   <Setter Property="TextWrapping" Value="Wrap"/>
+  </Style>
+ </Window.Resources>
+ <Border Name="Shell" CornerRadius="13" Padding="14,10">
+  <Border.Background>
+   <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+    <GradientStop Color="#F2111C2E" Offset="0"/>
+    <GradientStop Color="#F20A111F" Offset="1"/>
+   </LinearGradientBrush>
+  </Border.Background>
+  <Border.BorderBrush>
+   <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+    <GradientStop Color="#41567A" Offset="0"/>
+    <GradientStop Color="#2A3C58" Offset="0.5"/>
+    <GradientStop Color="#35507A" Offset="1"/>
+   </LinearGradientBrush>
+  </Border.BorderBrush>
+  <Border.BorderThickness>1</Border.BorderThickness>
+  <Grid Name="ContentGrid">
+   <Grid.LayoutTransform><ScaleTransform x:Name="UiScale" ScaleX="1" ScaleY="1"/></Grid.LayoutTransform>
+   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+   <Grid Name="DragHeader" Background="Transparent" Margin="0,0,0,10" Cursor="SizeAll">
+    <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+     <TextBlock Text="❄" Foreground="#38BDF8" Margin="0,0,7,0" FontSize="13" VerticalAlignment="Center"/>
+     <TextBlock Text="冰与火之宏" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center"/>
+     <TextBlock Text="🔥" Foreground="#FB923C" Margin="5,0,0,0" FontSize="12" VerticalAlignment="Center"/>
+    </StackPanel>
+    <Button Name="ExpandButton" Grid.Column="1" Content="展开 ▾" FontSize="11" Padding="9,4" ToolTip="展开设置 / 收起 · Ctrl+F10"/>
+    <Button Name="MinimizeButton" Grid.Column="2" Content="−" Padding="8,3" Background="#16223A" ToolTip="最小化"/>
+    <Button Name="CloseButton" Grid.Column="3" Content="×" Padding="8,3" Background="#3A1D28" ToolTip="停止并退出"/>
+   </Grid>
+   <StackPanel Grid.Row="1">
+    <TextBlock Name="ChartText" Text="等待读取谱面" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+    <TextBlock Name="StatusText" Text="未待命 · F8 启用" Foreground="#2DD4BF" FontSize="12" Margin="0,6,0,0" TextWrapping="Wrap" Height="34"/>
+    <ProgressBar Name="Progress" Minimum="0" Maximum="100" Height="3" Margin="0,2,0,6" Foreground="#2DD4BF" Background="#1B2A42" BorderThickness="0"/>
+    <TextBlock Name="StatsText" Text="砖块 — / —  ·  击键 0" Foreground="#8AA0BF" FontSize="11" TextTrimming="CharacterEllipsis"/>
+    <Grid Margin="0,8,0,0">
+     <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
+     <TextBlock Name="LeftHandText" Text="左手  —" Foreground="#38BDF8" FontSize="12"/>
+     <TextBlock Name="GestureText" Grid.Column="1" Text="逐档轮指" Foreground="#7C90AE" FontSize="10" Margin="6,2"/>
+     <TextBlock Name="RightHandText" Grid.Column="2" Text="右手  —" Foreground="#FB923C" FontSize="12" HorizontalAlignment="Right"/>
+    </Grid>
+   </StackPanel>
+   <Grid Grid.Row="2" Margin="0,10,0,0">
+    <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="8"/><ColumnDefinition/></Grid.ColumnDefinitions>
+    <Button Name="ArmButton" Content="待命 F8" Padding="10,7" FontSize="12" Background="#0E7490" BorderBrush="#0EA5B7"/>
+    <Button Name="StopButton" Grid.Column="2" Content="停止 F9" Padding="10,7" FontSize="12" Background="#7F1D2E" BorderBrush="#9F2B3F"/>
+   </Grid>
+   <ScrollViewer Name="SettingsPanel" Grid.Row="3" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,14,0,0">
+    <StackPanel Margin="0,0,8,0">
+     <Border Style="{StaticResource Card}">
+      <StackPanel>
+       <CheckBox Name="HumanizeBox" IsChecked="True" Content="仿真人手法" FontWeight="SemiBold" FontSize="14"/>
+       <TextBlock Name="HandHint" Text="从中间常用键开始，先加左键，再左右交替；每档按预览顺序循环。" Style="{StaticResource Hint}" Margin="0,7,0,12"/>
+       <Grid>
+        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="8"/><ColumnDefinition/></Grid.ColumnDefinitions>
+        <StackPanel>
+         <TextBlock Text="固定偏移 / ms" Style="{StaticResource Label}"/>
+         <TextBox Name="OffsetBox" Text="0" ToolTip="负数提前，正数延后"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+         <TextBlock Text="随机延迟上限 ± / ms" Style="{StaticResource Label}"/>
+         <TextBox Name="ErrorBox" Text="0" ToolTip="这是最高随机范围，两种模式共用。开启随速度增加后，慢速范围较小，达到设定速度后使用完整上限；0 表示关闭随机偏移。"/>
+        </StackPanel>
+       </Grid>
+       <CheckBox Name="ScaleDelayBox" Content="随速度增加随机延迟" IsChecked="True" Margin="0,12,0,0" FontSize="12"/>
+       <Grid Name="DelaySpeedPanel" Margin="0,8,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="112"/><ColumnDefinition Width="12"/><ColumnDefinition/></Grid.ColumnDefinitions>
+        <StackPanel>
+         <TextBlock Text="达到上限 / 次/秒" Style="{StaticResource Label}"/>
+         <TextBox Name="DelayFullSpeedBox" Text="10" ToolTip="范围 0.5–100 次/秒。默认 10：每秒 5 次用一半范围，10 次及以上用完整上限。计入游戏播放倍率。"/>
+        </StackPanel>
+        <TextBlock Grid.Column="2" Text="慢速范围小，越快越接近上限。取消勾选恢复固定范围。" Style="{StaticResource Hint}" VerticalAlignment="Center"/>
+       </Grid>
+       <Grid Margin="0,12,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="112"/><ColumnDefinition Width="12"/><ColumnDefinition/></Grid.ColumnDefinitions>
+        <StackPanel>
+         <TextBlock Text="按下→松开 / ms" Style="{StaticResource Label}"/>
+         <TextBox Name="KeyDurationBox" Text="35" ToolTip="范围 1–1000 ms。两种模式都按此时长安排普通键松开，连打不自动缩短；Hold 按谱面松开。"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+         <TextBlock Text="可用按键（最多32个，直接按键录入）" Style="{StaticResource Label}"/>
+         <TextBox Name="KeysBox" Text="A,S,D,F,H,J,K,L" ToolTip="点击此框后直接按下要添加的实体按键，程序会自动记录真实按键并用英文逗号分隔；按 Ctrl+A 清空列表。最多32个不重复按键。禁止：Esc、Win、F1~F12、PrtSc、Delete、CapsLK、NumLock、Copilot。英文逗号键会显示为 Comma。"/>
+        </StackPanel>
+       </Grid>
+       <StackPanel Name="HandProfilePanel" Margin="0,12,0,0">
+        <Grid>
+         <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+         <TextBlock Text="逐档轮指预览" FontSize="12" VerticalAlignment="Center" FontWeight="SemiBold"/>
+         <Button Name="HandPresetButton" Grid.Column="1" Content="ASDFHJKL" FontSize="11" Padding="10,5" ToolTip="恢复 ASDFHJKL 按键列表；延迟、按住时长与加键速度保持现有值。"/>
+        </Grid>
+        <TextBlock Name="CommonKeyText" Text="常用：H · 辅助：F" Foreground="#7DD3FC" FontSize="11" Margin="0,8,0,6"/>
+        <TextBox Name="StagePlanBox" IsReadOnly="True" AcceptsReturn="True" Height="164" FontSize="12" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Text="1 键  H&#10;2 键  H F&#10;3 键  J H F&#10;4 键  J H D F&#10;5 键  K J H D F&#10;6 键  K J H S D F&#10;7 键  L K J H S D F&#10;8 键  L K J H A S D F" ToolTip="修改上方可用按键后自动更新；每档从左到右循环。更多档位可在预览内滚动。"/>
+       </StackPanel>
+       <Grid Name="RollPanel" Margin="0,12,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="112"/><ColumnDefinition Width="12"/><ColumnDefinition/></Grid.ColumnDefinitions>
+        <StackPanel>
+         <TextBlock Text="加键速度 / 次/秒" Style="{StaticResource Label}"/>
+         <TextBox Name="RollSpeedBox" Text="4" ToolTip="范围 2–10。默认 4：约 4/8/12/16/20 次每秒依次扩到 2/3/4/5/6 键，最多使用配置的键数。"/>
+        </StackPanel>
+        <TextBlock Grid.Column="2" Text="每增加这档速度，上升一个档位。数值越小，越早加键。" Style="{StaticResource Hint}" VerticalAlignment="Center"/>
+       </Grid>
+       <TextBlock Name="KeyPlanText" Text="加键：H → F → J → D → K → S → L → A&#10;升降档从该档首键开始，同档从左到右循环。" Foreground="#7DD3FC" FontSize="11" Margin="0,10,0,0" TextWrapping="Wrap"/>
+       <TextBlock Name="ModeHint" Text="两种模式共用全部延迟设置；按住时长不随速度改变。" Style="{StaticResource Hint}" Margin="0,8,0,0"/>
+       <TextBlock Name="InputTimingText" Text="最近模拟：等待击键" Foreground="#2DD4BF" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap"/>
+      </StackPanel>
+     </Border>
+     <Border Style="{StaticResource Card}" Margin="0,10,0,0">
+      <StackPanel>
+       <Grid>
+        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+        <TextBlock Text="悬浮窗" FontWeight="SemiBold"/>
+        <CheckBox Name="TopmostBox" Grid.Column="1" Content="置顶" IsChecked="True" FontSize="12"/>
+       </Grid>
+       <Grid Margin="0,10,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition/></Grid.ColumnDefinitions>
+        <TextBlock Name="ScaleText" Text="大小 100%" Foreground="#93A9C6" FontSize="11"/>
+        <Slider Name="ScaleSlider" Grid.Column="1" Minimum="80" Maximum="140" Value="100" TickFrequency="5" IsSnapToTickEnabled="True" ToolTip="缩放界面文字与控件"/>
+       </Grid>
+       <Grid Margin="0,9,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition/></Grid.ColumnDefinitions>
+        <TextBlock Name="OpacityText" Text="透明度 92%" Foreground="#93A9C6" FontSize="11"/>
+        <Slider Name="OpacitySlider" Grid.Column="1" Minimum="45" Maximum="100" Value="92" TickFrequency="1" ToolTip="调整悬浮窗透明度"/>
+       </Grid>
+       <TextBlock Text="拖动标题移动 · 拖动右下角调整尺寸" Style="{StaticResource Hint}" Margin="0,9,0,0"/>
+      </StackPanel>
+     </Border>
+     <Border Style="{StaticResource Card}" Margin="0,10,0,0">
+      <StackPanel>
+       <TextBlock Name="ProcessText" Text="检测游戏进程中…" FontSize="12"/>
+       <TextBlock Name="ModuleText" Text="读取模块：检测中" Foreground="#FBBF77" FontSize="11" Margin="0,5,0,0"/>
+       <DockPanel Margin="0,9,0,9">
+        <Button Name="BrowseButton" DockPanel.Dock="Right" Content="目录" FontSize="11" Padding="10,6" Margin="6,0,0,0"/>
+        <TextBox Name="GamePath" FontSize="10" ToolTip="Steam 游戏安装目录"/>
+       </DockPanel>
+       <WrapPanel>
+        <Button Name="InstallButton" Content="安装 / 更新模块" FontSize="11" Padding="10,7" Margin="0,0,6,6" Background="#0E7490" BorderBrush="#0EA5B7"/>
+        <Button Name="LaunchButton" Content="启动游戏" FontSize="11" Padding="10,7" Margin="0,0,6,6"/>
+        <Button Name="UninstallButton" Content="卸载模块" FontSize="11" Padding="10,7" Margin="0,0,0,6"/>
+       </WrapPanel>
+       <TextBlock Text="安装或卸载前退出游戏，原文件会自动校验备份。" Style="{StaticResource Hint}"/>
+      </StackPanel>
+     </Border>
+     <TextBlock Text="F8 待命 → 切回游戏 → 手动按首键开始。暂停、Esc 或切出游戏会停止；展开设置也会停止。" Foreground="#8AA0BF" TextWrapping="Wrap" FontSize="11" Margin="0,12,0,0"/>
+     <TextBlock Name="NoteText" Text="支持常规、变速、旋转和 Hold；自由移动、多击砖块与双人模式暂不支持。" Foreground="#7C90AE" TextWrapping="Wrap" FontSize="10" Margin="0,6,0,0"/>
+     <Border Background="#111C2E" BorderBrush="#2A3C58" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,12,0,0">
+      <TextBlock Name="CreditsText" Foreground="#A6BAD8" FontSize="10" TextWrapping="Wrap" LineHeight="17">
+       <Run Text="原作者：bilibili@雪碧盖盖子"/><LineBreak/>
+       <Run Text="主页："/><Hyperlink NavigateUri="https://space.bilibili.com/496994156" Foreground="#38BDF8"><Run Text="https://space.bilibili.com/496994156"/></Hyperlink><LineBreak/>
+       <Run Text="改版：bilibili@MC萌新玩家"/><LineBreak/>
+       <Run Text="主页："/><Hyperlink NavigateUri="https://space.bilibili.com/3546630997412595" Foreground="#38BDF8"><Run Text="https://space.bilibili.com/3546630997412595"/></Hyperlink><LineBreak/>
+       <Run Text="申明：“冰与火之宏”由“霜火节拍”改版，改版工具为ChatGPT AI"/>
+      </TextBlock>
+     </Border>
+    </StackPanel>
+   </ScrollViewer>
+   <Grid Grid.Row="4" Margin="0,7,0,0">
+    <TextBlock Name="FooterText" Text="拖动标题移动 · Ctrl+F10 展开" FontSize="9" Foreground="#64788F" VerticalAlignment="Center"/>
+    <Thumb Focusable="False" Name="ResizeGrip" Width="18" Height="14" HorizontalAlignment="Right" Cursor="SizeNWSE" ToolTip="拖动调整悬浮窗尺寸">
+     <Thumb.Template>
+      <ControlTemplate><Grid Background="Transparent"><Path Data="M 6,13 L 16,3 M 11,13 L 16,8" Stroke="#6E86A6" StrokeThickness="1.2"/></Grid></ControlTemplate>
+     </Thumb.Template>
+    </Thumb>
+   </Grid>
+  </Grid>
+ </Border>
+</Window>

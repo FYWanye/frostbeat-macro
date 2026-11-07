@@ -1,0 +1,16 @@
+# 构建产物
+build/
+bin/
+obj/
+
+# 原始备份（体积大、非必要提交）
+src/*.bak.cs
+src/*.bak.xaml
+src/Mono.Cecil.decompiled.cs
+
+# 运行日志
+*.log
+
+# 系统文件
+Thumbs.db
+Desktop.ini
