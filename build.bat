@@ -1,8 +1,8 @@
 @echo off
 setlocal enabledelayedexpansion
 REM ============================================================
-REM  FrostBeat 冰与火之宏 - 构建脚本
-REM  依赖：Visual Studio 2022 Build Tools（含 Roslyn csc.exe）
+REM  FrostBeat ????? - ????
+REM  ???Visual Studio 2022 Build Tools?? Roslyn csc.exe?
 REM        .NET Framework 4.8.1 Targeting Pack
 REM ============================================================
 
@@ -14,13 +14,13 @@ set "REF=C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFra
 set "CSC=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\Roslyn\csc.exe"
 
 if not exist "%CSC%" (
-    echo [ERROR] 未找到 csc.exe，请安装 Visual Studio 2022 Build Tools。
-    echo         路径：%CSC%
+    echo [ERROR] ??? csc.exe???? Visual Studio 2022 Build Tools?
+    echo         ???%CSC%
     exit /b 1
 )
 if not exist "%REF%\mscorlib.dll" (
-    echo [ERROR] 未找到 .NET Framework 4.8.1 Targeting Pack。
-    echo         路径：%REF%
+    echo [ERROR] ??? .NET Framework 4.8.1 Targeting Pack?
+    echo         ???%REF%
     exit /b 1
 )
 
@@ -35,9 +35,9 @@ for %%d in (
     set "REFS=!REFS!"%REF%\%%d","
 )
 
-echo [INFO] 编译 FrostBeat.exe ...
+echo [INFO] ?? FrostBeat.exe ...
 "%CSC%" ^
-    /target:winexe /platform:anycpu /langversion:latest /optimize+ ^
+    /target:winexe /platform:x64 /langversion:latest /optimize+ ^
     /out:"%OUT%\FrostBeat.exe" ^
     /reference:%REFS% ^
     /reference:"%ROOT%Mono.Cecil.dll" ^
@@ -45,14 +45,14 @@ echo [INFO] 编译 FrostBeat.exe ...
     "%SRC%\FrostBeat.decompiled.cs"
 
 if errorlevel 1 (
-    echo [ERROR] 编译失败。
+    echo [ERROR] ?????
     exit /b 1
 )
 
-REM 复制运行时依赖
+REM ???????
 copy /Y "%ROOT%FrostBeat.Bridge.dll" "%OUT%\" >nul
 copy /Y "%ROOT%Mono.Cecil.dll" "%OUT%\" >nul
 copy /Y "%ROOT%FrostBeat.exe.config" "%OUT%\" >nul
 
-echo [OK] 构建完成：%OUT%\FrostBeat.exe
+echo [OK] ?????%OUT%\FrostBeat.exe
 exit /b 0
